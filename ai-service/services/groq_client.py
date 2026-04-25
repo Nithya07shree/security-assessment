@@ -13,21 +13,6 @@ from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_excep
 # Set up logging
 logger = logging.getLogger(__name__)
 load_dotenv()
-SYSTEM_PROMPT = """
-You are an APPLICATION SECURITY CONTROL expert. 
-
-Given an application security related issue, do the following: 
-- Determing the category of the issue: Network, Application, Endpoint, Cloud, IoT, Data Security, Malware Attacks, Supply Chain Attacks, Physical Security and others. 
-- Determine the severity of the security issue: Critical, High, Medium, Low, Informational. 
-- Provide 3 recommendations to mitigate the security issue. 
-Return a JSON object with 'category', 'severity' and 'recommendation' fields.",
-
-Constraints:
-- Do not provide harmful or unethical content.
-- Answer precisely without generating impractical solutions.
-- Maintain a professional and polite tone of sentences.
-- If you are unsure, say so instead of making things up. Refrain from answering any non application security realted questions.
-"""
 
 class GroqService:
     def __init__(self, api_key: str= None):
@@ -40,13 +25,13 @@ class GroqService:
         retry=retry_if_exception_type(Exception),
         before_sleep=before_sleep_log(logger, logger.warning)
     )
-    def call_groq(self, user_prompt:str)-> dict:
+    def call_groq(self,system_prompt:str, user_prompt:str)-> dict:
         try:
             response = self.client.chat.completions.create(
                 messages=[
                     {
                         'role':"system",
-                        "content":SYSTEM_PROMPT,
+                        "content":system_prompt,
                     },
                     {
                         "role":"user",
