@@ -21,12 +21,13 @@ from flask import jsonify
 
 logger = logging.getLogger(__name__)
 
-REDIS_URL = os.getenv("REDIS_URL", "redis://localhost:6379")
+REDIS_URL = os.getenv("REDIS_URL")
+STORAGE_URI = REDIS_URL if REDIS_URL else "memory://"
 
 limiter = Limiter(
     key_func=get_remote_address,
     default_limits=["30 per minute"],
-    storage_uri=REDIS_URL,
+    storage_uri=STORAGE_URI,
     strategy="fixed-window",
 )
 

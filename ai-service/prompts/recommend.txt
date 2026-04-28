@@ -1,0 +1,4 @@
+Provide 3 actionable recommendations for mitigation of the given security control statement as a JSON array.
+Each object in the array must have the following fields: 'action_type', 'description', and 'priority'. Return the JSON array with name "recommendations"
+CONTROL: {rule}
+Do not include any conversational text or markdown code blocks. Ensure the outputs are strictly JSON array.

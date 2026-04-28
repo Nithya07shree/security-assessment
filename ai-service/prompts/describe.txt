@@ -1,0 +1,3 @@
+Provide a detailed description and analysis for the following security control statement:
+CONTROL:  {rule}
+Ensure the output is strictly in JSON format with only 'description'

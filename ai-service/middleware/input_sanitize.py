@@ -8,8 +8,6 @@ Input Sanitization Middleware
 - this file catches attempts like injection attacks and Cross-Site Scripting (XSS) before the prompt reach Groq
 """
 
-import json
-from typing_extensions import List
 import bleach
 from bs4 import BeautifulSoup
 import logging

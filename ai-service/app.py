@@ -5,8 +5,19 @@ Flask entry point
 - Adding rate limiting
 """
 from flask import Flask
+import logging
 from middleware.input_sanitize import register_sanitization_hooks
 from middleware.rate_limit import register_rate_limiting
+
+from routes.describe import describe_bp
+from routes.recommend import recommend_bp
+
+# register logging
+logging.basicConfig(
+    filename='application_logs.log',
+    level = logging.INFO,
+    format='%(asctime)s %(levelname)s %(name)s: %(message)s'
+)
 
 app = Flask(__name__)
 
@@ -23,9 +34,10 @@ register_sanitization_hooks(app)
 register_rate_limiting(app)
 
 # register routes below
+app.register_blueprint(describe_bp)
+app.register_blueprint(recommend_bp)
 
-
-@app.route('/health', methods=['GET'])
+@app.route('/', methods=['GET'])
 def health():
     return {"status": "ok", "service": "tool-53-ai-service"}, 200
 
