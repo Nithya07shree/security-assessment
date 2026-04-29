@@ -3,6 +3,7 @@ venv/
 env
 .env
 __pycache__/
+chroma_data/
 
 build/
 dist/
