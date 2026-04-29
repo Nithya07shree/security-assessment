@@ -1,0 +1,15 @@
+Strong passwords must be enforced.
+Passwords should never be reused.
+Multi-factor authentication reduces account compromise risk.
+Firewalls block unauthorized traffic.
+Patch systems regularly.
+Encrypt data at rest.
+Encrypt data in transit.
+Least privilege access must be followed.
+Logs should be monitored continuously.
+Security audits must be scheduled quarterly.
+Backups must be encrypted.
+Endpoint protection should be enabled.
+Suspicious activity should trigger alerts.
+Unused accounts should be disabled.
+Network segmentation limits lateral movement.
