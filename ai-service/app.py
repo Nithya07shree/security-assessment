@@ -12,7 +12,8 @@ from middleware.rate_limit import register_rate_limiting
 from routes.describe import describe_bp
 from routes.recommend import recommend_bp
 from routes.categorise import categorise_bp
-from routes.query import query_bp
+from routes.test_rag import test_rag_bp
+from routes.generate_report import generate_report_bp
 
 from services.rag_pipeline import seed_collection
 
@@ -41,7 +42,8 @@ register_rate_limiting(app)
 app.register_blueprint(describe_bp)
 app.register_blueprint(recommend_bp)
 app.register_blueprint(categorise_bp)
-app.register_blueprint(query_bp)
+app.register_blueprint(test_rag_bp)
+app.register_blueprint(generate_report_bp)
 
 seed_collection()
 
