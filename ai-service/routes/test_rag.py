@@ -9,7 +9,7 @@ curl -X POST http://127.0.0.1:5000/test_rag -H "Content-Type: application/json" 
 from flask import Blueprint, jsonify, request
 from middleware.rate_limit import limiter
 from middleware.input_sanitize import sanitize_request_body
-from services.rag_pipeline import test_rag_docs
+from services.rag_pipeline import query_docs
 
 test_rag_bp = Blueprint("test_rag", __name__)
 
@@ -23,7 +23,7 @@ def test_rag():
     if not question:
         return jsonify({"error": "question required"}), 400
 
-    results = test_rag_docs(question)
+    results = query_docs(question)
 
     docs = results["documents"][0]
 
