@@ -56,6 +56,46 @@ seed_collection()
 def health():
     return {"status": "ok", "service": "tool-53-ai-service"}, 200
 
+@app.after_request
+def add_security_headers(response):
+
+    # strict content type enforcement
+    response.headers[
+        "X-Content-Type-Options"
+    ] = "nosniff"
+
+    # prevent clickjacking
+    response.headers[
+        "X-Frame-Options"
+    ] = "DENY"
+
+    # prevent referrer tracking
+    response.headers[
+        "Referrer-Policy"
+    ] = "no-referrer"
+
+    # hide Flask version
+    response.headers.pop(
+        "Server",
+        None
+    )
+
+    # CSP
+    response.headers[
+        "Content-Security-Policy"
+    ] = (
+        "default-src 'self'; "
+        "frame-ancestors 'none'; "
+        "object-src 'none';"
+    )
+
+    # remove server info if possible
+    response.headers.pop(
+        "Server",
+        None
+    )
+
+    return response
  
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=False)
