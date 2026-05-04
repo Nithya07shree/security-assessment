@@ -11,7 +11,6 @@ import json
 import time
 from collections import deque
 from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type, before_sleep_log
-from services.cache_service import (get_cached, set_cached)
 
 # Set up logging
 logger = logging.getLogger(__name__)
@@ -33,12 +32,6 @@ class GroqService:
     )
     def call_groq(self,system_prompt:str, user_prompt:str)-> dict:
         start = time.perf_counter()
-        cache_key = (system_prompt + user_prompt)
-
-        cached = get_cached(cache_key)
-
-        if cached:
-            return cached
         try:
             response = self.client.chat.completions.create(
                 messages=[
@@ -59,7 +52,6 @@ class GroqService:
             self.response_times.append(elapsed_ms)
             raw_content = response.choices[0].message.content
             parsed_json = json.loads(raw_content)
-            set_cached(cache_key, parsed_json)
             return parsed_json
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse Groq JSON respons: {str(e)}")
