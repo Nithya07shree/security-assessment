@@ -4,6 +4,8 @@ env
 .env
 __pycache__/
 chroma_data/
+data/
+application_logs.log
 
 build/
 dist/
