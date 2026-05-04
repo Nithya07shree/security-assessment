@@ -1,7 +1,19 @@
-from flask import Blueprint, request, jsonify
+"""
+ generate-report endpoint
+ to test:
+ run flask app: python app.py
+ bash--
+ curl -N -X POST http://localhost:5000/generate-report \
+-H "Content-Type: application/json" \
+-d "{\"input\":\"Weak password policy and missing MFA\"}"s
+"""
+
+from flask import Blueprint, request, jsonify, Response
 from middleware.rate_limit import limiter
 from middleware.input_sanitize import sanitize_request_body
 from services.groq_client import GroqService
+import json
+import time
 
 generate_report_bp = Blueprint("generate_report", __name__)
 groq = GroqService()
@@ -35,16 +47,16 @@ Return STRICT JSON:
 
     system = "You are a senior cybersecurity consultant."
 
-    try:
-        result = groq.call_groq(system, prompt)
-        return jsonify(result), 200
+    def event_stream():
+        yield("data: Starting report generation...\n")
+        try:
+            result = groq.call_groq(system, prompt)
+            text = json.dumps(result, indent =2)
+            for line in text.splitlines():
+                yield(f"data: {line}\n")
+                time.sleep(0.15)
+            yield ("data: [DONE]\n")
 
-    except Exception:
-        return jsonify({
-            "title":"Fallback Report",
-            "executive_summary":"Unable to generate live report.",
-            "overview":"Temporary AI outage.",
-            "top_items":[],
-            "recommendations":[]
-        }), 200
-        
+        except Exception:
+            yield ("data: report generation failed\n")
+    return Response(event_stream(), mimetype="text/event-stream")
