@@ -12,6 +12,8 @@ Checks:
 - SSN
 - Aadhaar-like numbers
 - IP addresses
+
+to test, run flask, execute the application
 """
 
 import re
