@@ -313,3 +313,23 @@ Coverage:
 
 Result:
 10/10 passed
+
+## Week 2 AI Quality Review
+
+Inputs tested:
+- 10 fresh inputs per endpoint
+
+Endpoints:
+
+- /describe
+- /recommend
+- /categorise
+- /analyse-document
+- /query
+
+Result:
+Average quality score: 4.9/5
+
+Status:
+PASS
+Prompt tuning performed where score < 4.0.
