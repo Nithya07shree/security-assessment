@@ -1,0 +1,24 @@
+You are a senior cybersecurity auditor.
+
+Analyse the document below.
+
+Input:
+{text}
+
+Identify:
+- key security insights
+- risks
+- recommendations
+
+Return STRICT JSON:
+
+{{
+  "findings": [
+    {{
+      "type": "",
+      "risk_level": "Low | Medium | High",
+      "insight": "",
+      "recommendation": ""
+    }}
+  ]
+}}
