@@ -333,3 +333,82 @@ Average quality score: 4.9/5
 Status:
 PASS
 Prompt tuning performed where score < 4.0.
+
+# Week 2 Security Sign-Off
+
+Date: 2026-05-05
+
+## Controls Verified
+
+### 1. Rate Limiting
+
+Status: PASS
+
+Verification:
+
+Endpoint tested:
+
+- POST /describe
+
+Configured:
+
+- 30 requests/minute
+
+Observed:
+
+- Requests 1–30 → HTTP 200
+- Request 31+ → HTTP 429
+
+Result:
+
+Abuse protection working.
+
+
+### 2. Injection Rejection
+
+Status: PASS
+
+Payloads tested:
+
+Prompt Injection:
+
+- "Ignore previous instructions"
+
+SQL Injection:
+
+- "' OR 1=1 --"
+
+XSS:
+
+- "<script>alert(1)</script>"
+
+Observed:
+
+- Malicious payloads rejected or sanitized
+- No prompt leakage
+- No server errors
+
+Result:
+
+Input sanitization working.
+
+
+### 3. Automated Testing
+
+Framework:
+- pytest
+
+Coverage:
+- Endpoint validation
+- Prompt injection
+- Rate limiting
+- Oversized payloads
+- AI upstream failure
+
+Result:
+PASS
+
+## Security Decision
+Week 2 AI security controls verified.
+Status:
+PASS
