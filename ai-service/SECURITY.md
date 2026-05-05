@@ -412,3 +412,58 @@ PASS
 Week 2 AI security controls verified.
 Status:
 PASS
+
+# Week 2 OWASP ZAP Active Scan
+
+Date: 2026-05-05
+
+## Scan Scope
+
+Target:
+- http://127.0.0.1:5000
+
+Endpoints tested:
+- POST /describe
+- POST /recommend
+- POST /query
+- POST /generate-report
+
+## Findings
+
+### Critical
+0
+Status: PASS
+
+### High
+0
+Status: PASS
+
+### Medium
+| Finding | Resolution |\
+| Server Version Disclosure | Accepted (development-only Werkzeug server; production uses WSGI server) |
+| CSP Directive Fallback | Fixed |
+
+
+### Informational
+
+| Finding | Decision |
+| User Agent Fuzzer | Accepted |
+
+## Remediation Applied
+
+Implemented:
+- X-Content-Type-Options
+- X-Frame-Options
+- Referrer-Policy
+- Cache-Control
+- Server header masking
+- Hardened Content Security Policy
+
+## Security Decision
+
+Critical findings: 0
+High findings: 0
+Medium findings: Resolved
+
+Status:
+PASSED
