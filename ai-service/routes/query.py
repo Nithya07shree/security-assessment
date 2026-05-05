@@ -56,7 +56,8 @@ Return JSON:
         return jsonify({
             "answer": answer["answer"],
             "confidence": answer["confidence"],
-            "sources": docs
+            "sources": docs,
+            "meta":answer.get("meta")
         }), 200
 
     except Exception:

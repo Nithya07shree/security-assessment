@@ -12,6 +12,7 @@ cache_hits = 0
 cache_misses = 0
 memory_cache = {}
 REDIS_AVAILABLE = True
+last_cache_hit = False
 
 try:
     redis_client = redis.Redis(
@@ -81,15 +82,21 @@ def get_cached(prompt: str):
             )
     if cached is None:
         cached = _get_memory(key)
+    global last_cache_hit
     if cached:
+        last_cache_hit=True
         cache_hits += 1
         logger.info("CACHE HIT")
         if isinstance(cached,str):
             return json.loads(cached)
         return cached
+    last_cache_hit = False
     cache_misses += 1
     logger.info("CACHE MISS")
     return None
+
+def was_cache_hit():
+    return last_cache_hit
 
 def set_cached(prompt: str,result: dict):
     key = build_cache_key(prompt)

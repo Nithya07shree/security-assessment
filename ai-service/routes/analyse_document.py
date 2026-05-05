@@ -55,7 +55,8 @@ def analyse_document():
         if not isinstance(findings,list):
             findings = []
         return jsonify({
-            "findings":findings
+            "findings":findings,
+            "meta":ai_response.get("meta")
         }), 200
     except Exception as e:
         return jsonify({

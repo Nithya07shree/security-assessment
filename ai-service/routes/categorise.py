@@ -62,5 +62,6 @@ Return JSON:
         return jsonify({
             "category": "Unknown",
             "confidence": 0.0,
-            "reasoning": str(e)
+            "reasoning": str(e),
+            "meta":ai_response.get("meta")
         }), 200

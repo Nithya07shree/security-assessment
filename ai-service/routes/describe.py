@@ -43,7 +43,8 @@ def describe():
         ai_response = groq_service.call_groq(SYSTEM_PROMPT, formatted_prompt)
         return jsonify({
             "description": ai_response.get("description","No description generated"),
-            "generated_at": datetime.now(timezone.utc).isoformat().replace('+00:00','Z')
+            "generated_at": datetime.now(timezone.utc).isoformat().replace('+00:00','Z'),
+            "meta":ai_response.get("meta")
         }),200
     except Exception as e:
         return jsonify({"error":"Internal server error", "detail":str(e)}),500
