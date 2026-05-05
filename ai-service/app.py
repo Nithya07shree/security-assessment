@@ -21,6 +21,8 @@ from routes.analyse_document import analyse_document_bp
 
 from services.rag_pipeline import seed_collection
 
+werkzeug_logger = logging.getLogger("werkzeug")
+werkzeug_logger.setLevel(logging.ERROR)
 # register logging
 logging.basicConfig(
     filename='application_logs.log',
