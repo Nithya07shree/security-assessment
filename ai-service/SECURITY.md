@@ -301,3 +301,15 @@ No customer or user PII found in:
 - Application logs
 - Cache layer
 - Vector documents
+
+## Automated Unit Tests
+Framework: pytest
+Coverage:
+- Endpoint format validation
+- Prompt injection blocking
+- Error handling
+- Oversized payloads
+- AI failure scenarios
+
+Result:
+10/10 passed
