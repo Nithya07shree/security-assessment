@@ -89,7 +89,24 @@ class GroqService:
             return parsed_json
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse Groq JSON response: {str(e)}")
-            raise # triggers retry is JSON is malformed
+            return self._fallback_response()
         except Exception as e:
             logger.error(f"Groq API Error: {str(e)}")
-            raise # trigger retry if any other exceptions
+            return self._fallback_response()
+    
+    def _fallback_response(self):
+        return {
+            "summary":"AI service temporarily unavailable.",
+            "risk_level":"Unknown",
+            "impact":"Live AI analysis unavailable.",
+            "recommendation":"Retry shortly.",
+            "confidence":0.0,
+            "meta":{
+                "confidence":0.0,
+                "model_used":"fallback",
+                "tokens_used":0,
+                "response_time_ms":0,
+                "cached":False,
+                "is_fallback":True
+            }
+        }
