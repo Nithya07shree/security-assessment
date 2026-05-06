@@ -26,8 +26,8 @@ class GroqService:
         self.cache_misses = 0
 
     @retry(
-        stop=stop_after_attempt(3),
-        wait=wait_exponential(multiplier=1,min=2,max=10),
+        stop=stop_after_attempt(2),
+        wait=wait_exponential(multiplier=0.1,min=0.1,max=1.0),
         retry=retry_if_exception_type(Exception),
         before_sleep=before_sleep_log(logger, logging.WARNING)
     )
@@ -38,6 +38,7 @@ class GroqService:
         if not fresh:
             cached = get_cached(cache_prompt)
         if cached:
+            self.cache_hits += 1
             logger.info("CACHE_HIT")
             cached["meta"] = {
                 "confidence":cached.get("meta",{}).get("confidence",0.95),
@@ -47,6 +48,7 @@ class GroqService:
                 "cached":True
             }
             return cached
+        self.cache_misses += 1
         try:
             response = self.client.chat.completions.create(
                 messages=[
