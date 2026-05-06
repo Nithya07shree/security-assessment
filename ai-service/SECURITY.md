@@ -467,3 +467,23 @@ Medium findings: Resolved
 
 Status:
 PASSED
+
+## Performance Optimisation
+
+Issue:
+
+Consistent ~2s latency across all AI endpoints.
+
+Root Cause:
+
+Redis connection fallback timeout.
+
+Remediation:
+
+- Added Redis availability detection at startup
+- Reduced retry backoff
+- Enabled in-memory cache fallback
+
+Result:
+
+p50 reduced below 100ms.
