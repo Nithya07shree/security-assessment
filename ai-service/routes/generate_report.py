@@ -19,11 +19,10 @@ import requests
 from flask import Blueprint,request,jsonify
 from middleware.rate_limit import limiter
 from middleware.input_sanitize import sanitize_request_body
-from services.groq_client import GroqService
+from services.ai_service import groq_service
 from services.job_store import create_job,update_job
 
 generate_report_bp=Blueprint("generate_report",__name__)
-groq=GroqService()
 
 def build_prompt(user_input):
     return f"""
@@ -48,7 +47,7 @@ def generate_result(user_input):
     prompt=build_prompt(user_input)
 
     try:
-        return groq.call_groq(system,prompt)
+        return groq_service.call_groq(system,prompt)
     except Exception:
         return {
             "title":"Fallback Report",

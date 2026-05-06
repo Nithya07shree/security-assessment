@@ -12,10 +12,9 @@ from flask import Blueprint, request, jsonify
 from middleware.rate_limit import limiter
 from middleware.input_sanitize import sanitize_request_body
 from services.rag_pipeline import query_docs
-from services.groq_client import GroqService
+from services.ai_service import groq_service
 
 query_bp = Blueprint("query", __name__)
-groq = GroqService()
 
 @query_bp.route("/query", methods=["POST"])
 @limiter.limit("15 per minute")
@@ -51,7 +50,7 @@ Return JSON:
     system = "You answer using retrieved security documents only."
 
     try:
-        answer = groq.call_groq(system, prompt)
+        answer = groq_service.call_groq(system, prompt)
 
         return jsonify({
             "answer": answer["answer"],

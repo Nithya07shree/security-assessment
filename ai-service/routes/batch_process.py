@@ -22,10 +22,9 @@ import time
 from flask import Blueprint,request,jsonify
 from middleware.rate_limit import limiter
 from middleware.input_sanitize import sanitize_request_body
-from services.groq_client import GroqService
+from services.ai_service import groq_service
 
 batch_process_bp=Blueprint("batch_process",__name__)
-groq_service=GroqService()
 
 def load_prompt_template(filename):
     curr_dir=os.path.dirname(__file__)
@@ -33,6 +32,13 @@ def load_prompt_template(filename):
 
     with open(template_path,"r",encoding="utf-8") as f:
         return f.read()
+
+BATCH_DESCRIBE_TEMPLATE = load_prompt_template("describe.txt")
+
+SYSTEM_PROMPT = """
+You are a helpful security assistant.
+Return valid JSON only.
+"""
 
 @batch_process_bp.route("/batch-process",methods=["POST"])
 @limiter.limit("5 per minute")
@@ -52,13 +58,6 @@ def batch_process():
         return jsonify({
             "error":"max 20 items"
         }),400
-    template=load_prompt_template(
-        "describe.txt"
-    )
-    system_prompt="""
-You are a helpful security assistant.
-Return valid JSON only.
-"""
     results=[]
     for index,item in enumerate(items):
         rule=item.get("rule","")
@@ -70,8 +69,8 @@ Return valid JSON only.
             })
             continue
         try:
-            prompt=template.format(rule=rule)
-            ai_response=groq_service.call_groq(system_prompt,prompt)
+            prompt=BATCH_DESCRIBE_TEMPLATE.format(rule=rule)
+            ai_response=groq_service.call_groq(SYSTEM_PROMPT,prompt)
             results.append({
                 "index":index,
                 "success":True,

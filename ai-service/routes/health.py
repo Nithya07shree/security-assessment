@@ -7,15 +7,13 @@
 import time
 from flask import Blueprint, jsonify
 
-from services.groq_client import GroqService
+from services.ai_service import groq_service
 from services.rag_pipeline import collection
 
 health_bp = Blueprint(
     "health",
     __name__
 )
-
-groq = GroqService()
 
 START_TIME = time.time()
 
@@ -27,7 +25,7 @@ START_TIME = time.time()
 def health():
 
     response_times = list(
-        groq.response_times
+        groq_service.response_times
     )
 
     avg_time = (
@@ -55,7 +53,7 @@ def health():
         "status": "ok",
 
         "model_name":
-            groq.model,
+            groq_service.model,
 
         "avg_response_time_ms":
             avg_time,
@@ -68,10 +66,10 @@ def health():
 
         "cache": {
             "hits":
-                groq.cache_hits,
+                groq_service.cache_hits,
 
             "misses":
-                groq.cache_misses
+                groq_service.cache_misses
         }
 
     }), 200

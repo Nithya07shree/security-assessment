@@ -9,10 +9,9 @@ $ curl -X POST http://127.0.0.1:5000/categorise -H "Content-Type: application/js
 from flask import Blueprint, request, jsonify
 from middleware.rate_limit import limiter
 from middleware.input_sanitize import sanitize_request_body
-from services.groq_client import GroqService
+from services.ai_service import groq_service
 
 categorise_bp = Blueprint("categorise", __name__)
-groq = GroqService()
 
 CATEGORIES = [
     "Access Control",
@@ -55,7 +54,7 @@ Return JSON:
     system = "You are a cybersecurity classifier."
 
     try:
-        result = groq.call_groq(system, prompt)
+        result = groq_service.call_groq(system, prompt)
         return jsonify(result), 200
 
     except Exception as e:
