@@ -4,7 +4,7 @@ env
 .env
 __pycache__/
 chroma_data/
-data/
+ai-service/chroma_data
 application_logs.log
 
 build/
