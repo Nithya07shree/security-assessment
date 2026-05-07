@@ -1,0 +1,5 @@
+Sensitive data must be encrypted at rest.
+TLS version 1.2 or higher is required in transit.
+Encryption keys must be rotated regularly.
+Private keys must be securely stored.
+Weak ciphers must be disabled.

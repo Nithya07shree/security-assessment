@@ -1,0 +1,5 @@
+Cloud storage buckets must not be public by default.
+IAM permissions must follow least privilege.
+Audit logging must be enabled.
+Secrets must not be hardcoded.
+Infrastructure changes must be tracked.

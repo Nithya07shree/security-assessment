@@ -1,0 +1,5 @@
+Firewalls must restrict unauthorized traffic.
+Ingress and egress filtering must be enabled.
+Unused ports should be closed.
+Network segmentation should separate critical systems.
+Intrusion detection systems are recommended.

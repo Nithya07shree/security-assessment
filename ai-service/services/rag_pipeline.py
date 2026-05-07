@@ -14,6 +14,7 @@ for testing RAG pipeline:
 import os
 import chromadb
 from sentence_transformers import SentenceTransformer
+from pathlib import Path
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
@@ -29,11 +30,19 @@ collection = client.get_or_create_collection(
     name="security_docs"
 )
 
-def load_document():
-    path = os.path.join(DATA_DIR, "security_docs.txt")
+DATA_DIR=Path("data/seed_docs")
 
-    with open(path, "r", encoding="utf-8") as f:
-        return f.read()
+def load_document():
+    documents=[]
+    for file in DATA_DIR.glob("*.txt"):
+        text=file.read_text(
+            encoding="utf-8"
+        )
+        documents.append({
+            "id":file.stem,
+            "text":text
+        })
+    return documents
 
 def chunk_text(text, chunk_size=500, overlap=50):
     chunks = []
@@ -47,27 +56,29 @@ def chunk_text(text, chunk_size=500, overlap=50):
     return chunks
 
 def seed_collection():
-    if collection.count() > 0:
+    existing_count=collection.count()
+    if existing_count>0:
+        print(f"Chroma already seeded ({existing_count} chunks)")
         return
-
-    text = load_document()
-    chunks = chunk_text(text)
-
-    for i, chunk in enumerate(chunks):
-        embedding = model.encode(chunk).tolist()
-
-        collection.add(
-            ids=[f"chunk_{i}"],
-            documents=[chunk],
-            embeddings=[embedding]
-        )
+    docs=load_document()
+    counter=0
+    for doc in docs:
+        chunks=chunk_text(doc["text"])
+        for chunk in chunks:
+            embedding=model.encode(chunk).tolist()
+            collection.add(
+                documents=[chunk],
+                embeddings=[embedding],
+                ids=[f"{doc['id']}_{counter}"],
+                metadatas=[{"source":doc["id"]}]
+            )
+            counter+=1
+    print(f"Seeded {counter} chunks")
 
 def query_docs(question, top_k=3):
     embedding = model.encode(question).tolist()
-
     results = collection.query(
         query_embeddings=[embedding],
         n_results=top_k
     )
-
     return results

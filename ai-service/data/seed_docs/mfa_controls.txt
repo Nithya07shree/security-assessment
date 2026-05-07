@@ -1,0 +1,5 @@
+Multi-factor authentication must be enabled for all privileged users.
+Time-based one-time passwords are recommended.
+SMS-based MFA should be avoided where possible.
+Administrative consoles must enforce MFA.
+Remote access requires MFA.

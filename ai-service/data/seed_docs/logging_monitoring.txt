@@ -1,0 +1,5 @@
+Security logs must capture authentication events.
+Administrative actions must be logged.
+Log retention must be at least 90 days.
+Failed login attempts must trigger alerts.
+Logs should be protected against tampering.

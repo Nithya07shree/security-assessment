@@ -1,0 +1,5 @@
+Least privilege access must be enforced.
+Access reviews must occur quarterly.
+Dormant accounts should be disabled.
+Shared administrative accounts are prohibited.
+Role-based access control is recommended.

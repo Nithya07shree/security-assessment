@@ -1,0 +1,5 @@
+Incident response plans must be documented.
+Security incidents must be classified by severity.
+Forensic evidence must be preserved.
+Stakeholders must be notified promptly.
+Post-incident reviews are required.

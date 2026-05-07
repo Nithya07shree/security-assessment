@@ -1,0 +1,5 @@
+ISO 27001 requires risk-based controls.
+NIST recommends defense in depth.
+PCI DSS requires cardholder data protection.
+SOC 2 requires security monitoring.
+Compliance evidence must be retained.
