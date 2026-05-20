@@ -6,6 +6,8 @@ Flask entry point
 """
 from flask import Flask
 import logging
+import sys
+import os
 from middleware.input_sanitize import register_sanitization_hooks
 from middleware.rate_limit import register_rate_limiting
 
@@ -26,10 +28,14 @@ from services.rag_pipeline import seed_collection
 werkzeug_logger = logging.getLogger("werkzeug")
 werkzeug_logger.setLevel(logging.ERROR)
 # register logging
+_log_handlers = [logging.StreamHandler(sys.stdout)]
+if os.getenv("LOG_TO_FILE", "").lower() in ("1", "true", "yes"):
+    _log_handlers.append(logging.FileHandler("application_logs.log"))
+
 logging.basicConfig(
-    filename='application_logs.log',
-    level = logging.INFO,
-    format='%(asctime)s %(levelname)s %(name)s: %(message)s'
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(name)s: %(message)s",
+    handlers=_log_handlers,
 )
 
 app = Flask(__name__)
